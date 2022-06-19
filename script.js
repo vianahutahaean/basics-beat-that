@@ -95,6 +95,34 @@ var getPlayerScore = function (playerInput) {
   return "Player " + currentPlayer + ", your chosen value is: " + playerScore;
 };
 
+var comparePlayerScores = function () {
+  var compareMessage =
+    "Player 1 score: " +
+    allPlayerScore[0] +
+    ".<br>Player 2 score: " +
+    allPlayerScore[1] +
+    ".<br>";
+  //player 1 wins
+  if (allPlayerScore[0] > allPlayerScore[1]) {
+    compareMessage = compareMessage + "<br>Player 1 won!";
+  }
+  //player 2 wins
+  if (allPlayerScore[0] < allPlayerScore[1]) {
+    compareMessage = compareMessage + "<br>Player 2 won!";
+  }
+  //tie
+  if (allPlayerScore[0] == allPlayerScore[1]) {
+    compareMessage = compareMessage + "<br>It's a tie!";
+  }
+  return compareMessage;
+};
+
+var resetGame = function () {
+  currentPlayer = 1;
+  gameState = GAME_STATE_DICE_ROLL;
+  allPlayerScore = [];
+};
+
 var main = function (input) {
   console.log("Checking game state on submit click:", gameState);
   console.log("Checking currentPlayer on submit click:", currentPlayer);
@@ -115,26 +143,11 @@ var main = function (input) {
     outputMessage = getPlayerScore(input);
   }
 
+  // if (gameState == GAME_STATE_COMPARE_SCORES){
   if (gameState == GAME_STATE_COMPARE_SCORES) {
     console.log("Control flow: gameState == GAME_STATE_COMPARE");
-    outputMessage =
-      "Player 1 score: " +
-      allPlayerScore[0] +
-      ".<br>Player 2 score: " +
-      allPlayerScore[1] +
-      ".<br>";
-    //player 1 wins
-    if (allPlayerScore[0] > allPlayerScore[1]) {
-      outputMessage = outputMessage + "<br>Player 1 won!";
-    }
-    //player 2 wins
-    if (allPlayerScore[0] < allPlayerScore[1]) {
-      outputMessage = outputMessage + "<br>Player 2 won!";
-    }
-    //tie
-    if (allPlayerScore[0] == allPlayerScore[1]) {
-      outputMessage = outputMessage + "<br>It's a tie!";
-    }
+    //   console.log('Control flow: gameState == GAME_STATE_COMPARE_SCORES')
+    outputMessage = comparePlayerScores();
     return outputMessage;
   }
 
@@ -153,4 +166,6 @@ var main = function (input) {
     console.log(gameState);
     return outputMessage + "<br><br>Press submit to calculate scores!";
   }
+  resetGame();
+  return outputMessage;
 };
